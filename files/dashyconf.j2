@@ -1,0 +1,74 @@
+appConfig:
+  theme: one-dark
+  language: fr
+  layout: auto
+  iconSize: medium
+  customColors:
+    one-dark:
+      primary: '#5cabca'
+      background: '#0b1021'
+      background-darker: '#05070e'
+pageInfo:
+  title: Dashy
+sections:
+  - name: Supervision
+    icon: hl-network-ups-tools
+    displayData:
+      sortBy: default
+      rows: 1
+      cols: 1
+      collapsed: false
+      hideForGuests: false
+    items:
+      - &ref_0
+        title: LibreNMS
+        description: Outil de supervision LibreNms
+        icon: hl-librenms
+        url: https://192.168.0.253:444/
+        target: newtab
+        id: 0_1191_librenms
+    filteredItems:
+      - *ref_0
+  - name: Réseau
+    icon: hl-network-weathermap
+    displayData:
+      sortBy: default
+      rows: 1
+      cols: 1
+      collapsed: false
+      hideForGuests: false
+    items:
+      - &ref_1
+        title: Nas Synology
+        description: Synology
+        icon: hl-synology
+        url: https://192.168.0.253:5001/
+        target: newtab
+        id: 0_745_nassynology
+      - &ref_2
+        title: Unifi
+        description: Unifi
+        icon: hl-unifi
+        url: https://192.168.0.1/login?redirect=%2F
+        target: newtab
+        id: 1_745_unifi
+    filteredItems:
+      - *ref_1
+      - *ref_2
+  - name: DevOps
+    icon: hl-secureai-tools
+    displayData:
+      sortBy: default
+      rows: 1
+      cols: 1
+      collapsed: false
+      hideForGuests: false
+    items:
+      - &ref_3
+        title: ChangeDetection
+        icon: hl-changedetection
+        url: https://192.168.0.253:446/?tag="
+        target: newtab
+        id: 0_593_changedetection
+    filteredItems:
+      - *ref_3

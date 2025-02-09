@@ -15,7 +15,7 @@ services:
       GID: 100
       NODE_ENV: production
     volumes:
-      - /volume1/docker/dashy/dashyconf.yml:/app/user-data/conf.yml
+      - /volume1/docker/dashy/dashy_conf.yml:/app/user-data/conf.yml
       - /volume1/docker/dashy/icons:/app/user-data/item-icons:rw
     ports:
       - 7444:8080

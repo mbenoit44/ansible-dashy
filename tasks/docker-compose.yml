@@ -5,6 +5,13 @@
     dest: "/volume1/docker/dashy/docker-compose.yml"
     mode: 0644
 
+- name: Copy Docker compose file.
+  template:
+    src: "files/dashyconf.j2"
+    dest: "/volume1/docker/dashy/dashy_conf.yml"
+    mode: 0644
+
+
 - name: Execute Docker-compose
   command: /usr/local/bin/docker-compose -f /volume1/docker/dashy/docker-compose.yml up -d 
   args:
