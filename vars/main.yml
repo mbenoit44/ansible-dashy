@@ -1,0 +1,6 @@
+---
+db_root_password: "rootpassword"
+db_name: "librenms"
+db_user: "librenmsuser"
+db_password: "librenmspass"
+db_host: "db"

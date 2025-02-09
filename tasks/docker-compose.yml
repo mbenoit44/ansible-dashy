@@ -1,0 +1,11 @@
+---
+- name: Copy Docker compose file.
+  template:
+    src: "files/docker-compose.j2"
+    dest: "/volume1/docker/dashy/docker-compose.yml"
+    mode: 0644
+
+- name: Execute Docker-compose
+  command: /usr/local/bin/docker-compose -f /volume1/docker/dashy/docker-compose.yml up -d 
+  args:
+    chdir: /volume1/docker/dashy/
