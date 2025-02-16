@@ -1,5 +1,5 @@
 appConfig:
-  theme: adventure-basic
+  theme: adventure
   language: fr
   layout: auto
   iconSize: medium
@@ -70,8 +70,15 @@ sections:
         url: https://192.168.0.253:446/?tag="
         target: newtab
         id: 0_593_changedetection
+      - &ref_4
+        title: Semaphore
+        icon: hl-semaphore
+        url: https://192.168.0.253:448/
+        target: newtab
+        id: 1_593_semaphore
     filteredItems:
       - *ref_3
+      - *ref_4
   - name: Video
     icon: hl-channels-dvr
     displayData:
@@ -81,23 +88,23 @@ sections:
       collapsed: false
       hideForGuests: false
     items:
-      - &ref_4
+      - &ref_5
         title: Plex
         icon: hl-plex
         url: https://192.168.0.253:32400/
         id: 0_503_plex
-      - &ref_5
+      - &ref_6
         title: Netflix
         icon: hl-netflix
         url: https://www.netflix.com
         id: 1_503_netflix
-      - &ref_6
+      - &ref_7
         title: Canal +
         icon: hl-cilium-light
         url: https://www.canalplus.com/
         target: newtab
         id: 2_503_canal
-      - &ref_7
+      - &ref_8
         title: Prime Video
         description: ''
         icon: hl-prime-video
@@ -105,7 +112,7 @@ sections:
           https://www.primevideo.com/-/fr/offers/nonprimehomepage/ref=dv_web_force_root?language=fr
         id: 3_503_primevideo
     filteredItems:
-      - *ref_4
       - *ref_5
       - *ref_6
       - *ref_7
+      - *ref_8
