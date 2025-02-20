@@ -1,6 +1,6 @@
 ---
-db_root_password: "rootpassword"
-db_name: "librenms"
-db_user: "librenmsuser"
-db_password: "librenmspass"
-db_host: "db"
+webhook_url: "https://discord.com/api/webhooks/1340761149943316592/vZ8GtMyxtSeeFqn7OwW0t01HThpaeMkHfDLv3r142zjS3YM3xhlLS97YFHPWpNoZrrWf"
+docker_running: false  # Initialisation pour éviter l'erreur
+docker_pull_success: false  # Initialisation pour éviter l'erreur
+inventory_hostname: "lissy93/dashy:latest" # Nom de l'inventaire
+State_Status: "{{.State.Status}}"  #Status

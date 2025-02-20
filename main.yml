@@ -7,5 +7,7 @@
       include_vars: vars/main.yml
     - name: Installation and configuration of crontab
       include_tasks: tasks/docker.yml
+    - name: Installation and configuration of crontab
+      include_tasks: tasks/webhook.yml
     - name: Solution deployement
       include_tasks: tasks/docker-compose.yml

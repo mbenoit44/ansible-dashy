@@ -1,24 +1,25 @@
 ---
 # tasks file for zabbix
-- name: Check if Docker service is running
-  command: systemctl status pkgctl-Docker
+- name: Check if Dashy container is running
+  command: /usr/local/bin/docker inspect -f "{{ '{{ .State.Status }}' }}" Dashy
   register: docker_status
-  ignore_errors: yes
+  failed_when: docker_status.rc != 0
+  changed_when: false
 
 - name: Print Docker running status
   debug:
     msg: "Docker is running: {{ docker_status.stdout }}"
-  when: "'enable' in docker_status.stdout and 'active' in docker_status.stdout"
+  when: "'running' in docker_status.stdout"
 
 - name: Docker is not running
   debug:
     msg: "Docker is not running or not installed"
-  when: "'enable' not in docker_status.stdout or 'active' not in docker_status.stdout"
+  when: "'running' not in docker_status.stdout"
 
 - name: Docker is not running, attempting to start it
   debug:
     msg: "Docker is not running or not installed, attempting to start it"
-  when: "'enable' not in docker_status.stdout or 'active' not in docker_status.stdout"
+  when: "'running' not in docker_status.stdout"
 
 - name: Download Docker image lissy93/dashy:latest
   command: /var/packages/ContainerManager/target/usr/bin/docker pull lissy93/dashy:latest

@@ -1,0 +1,53 @@
+---
+# Condition 1 : Succès total (Docker fonctionne + Image téléchargée)
+- name: Debug Docker running status and image pull status
+  debug:
+    msg: "docker_running: {{ docker_running }}, docker_pull_success: {{ docker_pull_success }}"
+
+- name: Set docker_pull_success to true if pull was successful
+  set_fact:
+    docker_pull_success: "{{ docker_pull.rc == 0 }}"
+
+- name: Set docker_running to true if Docker is running
+  set_fact:
+    docker_running: "{{ 'running' in docker_status.stdout }}"
+
+- name: Envoyer un webhook en cas de succès complet
+  uri:
+    url: "{{ webhook_url }}"
+    method: POST
+    body_format: json
+    body:
+      content: "✅ Succès : L’image Docker sur {{ inventory_hostname }} a été téléchargée avec succès. et Docker est actif !"
+    status_code: [200, 204]  # Accepte les réponses 200 et 204
+  register: webhook_response
+  when: docker_pull_success
+
+# Condition 2 : Docker actif mais échec du téléchargement
+- name: Envoyer un webhook si Docker fonctionne mais téléchargement échoué
+  uri:
+    url: "{{ webhook_url }}"
+    method: POST
+    body_format: json
+    body:
+      content: "⚠️ Avertissement : Docker est actif, mais l’image sur {{ inventory_hostname }} n’a pas pu être téléchargée."
+    status_code: [200, 204]
+  register: webhook_response
+  when: docker_running and not docker_pull_success
+
+# Condition 3 : Docker inactif ou non installé
+- name: Envoyer un webhook si Docker est inactif ou absent
+  uri:
+    url: "{{ webhook_url }}"
+    method: POST
+    body_format: json
+    body:
+      content: "❌ Erreur : Docker n’est pas actif ou n’est pas installé sur {{ inventory_hostname }}."
+    status_code: [200, 204]
+  register: webhook_response
+  when: not docker_running
+
+- name: Debug webhook response
+  debug:
+    msg: "Webhook response: {{ webhook_response }}"
+  when: webhook_response is defined
