@@ -1,7 +1,7 @@
 ---
-# tasks file for zabbix
-- name: Check if Dashy container is running
-  command: /usr/local/bin/docker inspect -f "{{ '{{ .State.Status }}' }}" Dashy
+# tasks file for Dashy
+- name: Check if Dashy {{ container_name }} is running
+  command: /usr/local/bin/docker inspect -f "{{ '{{ .State.Status }}' }}" {{ container_name }}
   register: docker_status
   failed_when: docker_status.rc != 0
   changed_when: false
@@ -21,17 +21,17 @@
     msg: "Docker is not running or not installed, attempting to start it"
   when: "'running' not in docker_status.stdout"
 
-- name: Download Docker image lissy93/dashy:latest
-  command: /var/packages/ContainerManager/target/usr/bin/docker pull lissy93/dashy:latest
+- name: Download Docker image {{ inventory_hostname }}
+  command: /var/packages/ContainerManager/target/usr/bin/docker pull {{ inventory_hostname }}
   register: docker_pull
   ignore_errors: yes
 
-- name: Print Docker image pull status lissy93/dashy:latest
+- name: Print Docker image pull status {{ inventory_hostname }}
   debug:
     msg: "Docker image pull result: {{ docker_pull.stdout }}"
   when: docker_pull.rc == 0
 
-- name: Failed to pull Docker image lissy93/dashy:latest
+- name: Failed to pull Docker image {{ inventory_hostname }}
   debug:
     msg: "Failed to pull Docker image"
   when: docker_pull.rc != 0

@@ -4,3 +4,4 @@ docker_running: false  # Initialisation pour éviter l'erreur
 docker_pull_success: false  # Initialisation pour éviter l'erreur
 inventory_hostname: "lissy93/dashy:latest" # Nom de l'inventaire
 State_Status: "{{.State.Status}}"  #Status
+container_name: "Dashy" #Nom du conteneur

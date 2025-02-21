@@ -1,11 +1,11 @@
 ---
-- name: Copy Docker compose file.
+- name: Copy Docker compose file docker-compose.j2.
   template:
     src: "files/docker-compose.j2"
     dest: "/volume1/docker/dashy/docker-compose.yml"
     mode: 0644
 
-- name: Copy Docker compose file.
+- name: Copy Docker compose file dashyconf.j2.
   template:
     src: "files/dashyconf.j2"
     dest: "/volume1/docker/dashy/dashy_conf.yml"
