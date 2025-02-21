@@ -21,17 +21,17 @@
     msg: "Docker is not running or not installed, attempting to start it"
   when: "'running' not in docker_status.stdout"
 
-- name: Download Docker image {{ inventory_hostname }}
-  command: /var/packages/ContainerManager/target/usr/bin/docker pull {{ inventory_hostname }}
+- name: Download Docker image {{ image_name }}
+  command: /var/packages/ContainerManager/target/usr/bin/docker pull {{ image_name }}
   register: docker_pull
   ignore_errors: yes
 
-- name: Print Docker image pull status {{ inventory_hostname }}
+- name: Print Docker image pull status {{ image_name }}
   debug:
     msg: "Docker image pull result: {{ docker_pull.stdout }}"
   when: docker_pull.rc == 0
 
-- name: Failed to pull Docker image {{ inventory_hostname }}
+- name: Failed to pull Docker image {{ image_name }}
   debug:
     msg: "Failed to pull Docker image"
   when: docker_pull.rc != 0

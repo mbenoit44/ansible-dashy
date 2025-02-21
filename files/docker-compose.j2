@@ -1,9 +1,9 @@
 version: '3.9'
 services:
- dashy:
-    image: lissy93/dashy:latest
-    container_name: Dashy
-    restart: on-failure:5
+  dashy:
+    image: {{ image_name }}
+    container_name: {{ container_name }}
+    restart: {{ restart_policy }}
     healthcheck:
       test: ['CMD', 'node', '/app/services/healthcheck']
       interval: 1m30s
@@ -15,7 +15,7 @@ services:
       GID: 100
       NODE_ENV: production
     volumes:
-      - /volume1/docker/dashy/dashy_conf.yml:/app/user-data/conf.yml
-      - /volume1/docker/dashy/icons:/app/user-data/item-icons:rw
+      - "{{ config_file }}:/app/user-data/conf.yml"
+      - "{{ icons_path }}:/app/user-data/item-icons:rw"
     ports:
-      - 7444:8080
+      - "{{ host_port }}:{{ container_port }}"

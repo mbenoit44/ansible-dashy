@@ -1,7 +1,24 @@
 ---
+#inventory_hostname: "lissy93/dashy:latest" # Nom de l'inventaire
+#State_Status: "{{.State.Status}}"  #Status
+#container_name: "Dashy" #Nom du conteneur
+
+# Configuration générale
+container_name: "Dashy"
+image_name: "lissy93/dashy:latest"
+host_port: 7444
+container_port: 8080
+restart_policy: "on-failure:5"
+
+#Docker Action
+docker_running: false
+docker_pull_success: false 
+
+# Chemins et volumes
+docker_path: "/volume1/docker/dashy"
+config_file: "{{ docker_path }}/dashy_conf.yml"
+icons_path: "{{ docker_path }}/icons"
+compose_file: "{{ docker_path }}/docker-compose.yml"
+
+# Webhook
 webhook_url: "https://discord.com/api/webhooks/1340761149943316592/vZ8GtMyxtSeeFqn7OwW0t01HThpaeMkHfDLv3r142zjS3YM3xhlLS97YFHPWpNoZrrWf"
-docker_running: false  # Initialisation pour éviter l'erreur
-docker_pull_success: false  # Initialisation pour éviter l'erreur
-inventory_hostname: "lissy93/dashy:latest" # Nom de l'inventaire
-State_Status: "{{.State.Status}}"  #Status
-container_name: "Dashy" #Nom du conteneur

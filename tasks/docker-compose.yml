@@ -1,17 +1,17 @@
 ---
-- name: Copy Docker compose file docker-compose.j2.
+- name: Copier le fichier Docker Compose
   template:
     src: "files/docker-compose.j2"
-    dest: "/volume1/docker/dashy/docker-compose.yml"
+    dest: "{{ compose_file }}"
     mode: 0644
 
-- name: Copy Docker compose file dashyconf.j2.
+- name: Copier le fichier de configuration Dashy
   template:
     src: "files/dashyconf.j2"
-    dest: "/volume1/docker/dashy/dashy_conf.yml"
+    dest: "{{ config_file }}"
     mode: 0644
 
-- name: Execute Docker-compose
-  command: /usr/local/bin/docker-compose -f /volume1/docker/dashy/docker-compose.yml up -d 
+- name: Lancer Docker Compose
+  command: /usr/local/bin/docker-compose -f {{ compose_file }} up -d
   args:
-    chdir: /volume1/docker/dashy/
+    chdir: "{{ docker_path }}"
