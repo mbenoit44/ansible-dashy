@@ -1,6 +1,6 @@
 ---
 # tasks file for Dashy
-- name: Check if Dashy {{ container_name }} is running
+- name: Check if {{ container_name }} is running
   command: /usr/local/bin/docker inspect -f "{{ '{{ .State.Status }}' }}" {{ container_name }}
   register: docker_status
   failed_when: docker_status.rc != 0
