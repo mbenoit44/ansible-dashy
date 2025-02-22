@@ -6,7 +6,8 @@
 
 - name: Set docker_pull_success to true if pull was successful
   set_fact:
-    docker_pull_success: "{{ docker_pull.rc == 0 }}"
+    docker_pull_success: true
+  when: docker_pull.changed
 
 - name: Set docker_running to true if Docker is running
   set_fact:
@@ -18,19 +19,19 @@
     method: POST
     body_format: json
     body:
-      content: "✅ Succès : L’image Docker de {{ image_name }}  a été téléchargée avec succès. et Docker est actif !"
+      content: "✅ Succès : L’image Docker de {{ image_name }}  a été mis à jour avec succès. et Docker est actif !"
     status_code: [200, 204]  # Accepte les réponses 200 et 204
   register: webhook_response
   when: docker_pull_success
 
 # Condition 2 : Docker actif mais échec du téléchargement
-- name: Envoyer un webhook si Docker fonctionne mais téléchargement échoué
+- name: Envoyer un webhook si Docker fonctionne mais pas de mise à jour 
   uri:
     url: "{{ webhook_url }}"
     method: POST
     body_format: json
     body:
-      content: "⚠️ Avertissement : Docker est actif, mais l’image de {{ image_name }}  n’a pas pu être téléchargée."
+      content: "ℹ️ Pour information : Docker est actif, mais l’image de {{ image_name }}  n’a pas été mis à jour"
     status_code: [200, 204]
   register: webhook_response
   when: docker_running and not docker_pull_success
@@ -42,7 +43,7 @@
     method: POST
     body_format: json
     body:
-      content: "❌ Erreur : Docker n’est pas actif ou n’est pas installé sur {{ image_name }}."
+      content: "❌ Erreur : Docker n’est pas actif ou n’est pas installé ou mis à jour sur {{ image_name }}."
     status_code: [200, 204]
   register: webhook_response
   when: not docker_running
