@@ -1,17 +1,35 @@
 ---
-- name: Copier le fichier Docker Compose
-  template:
-    src: "files/docker-compose.j2"
-    dest: "{{ compose_file }}"
-    mode: 0644
+# tasks/docker.yml
+- name: Vérifier si Docker est installé
+  command: which docker
+  register: docker_installed
+  changed_when: false
 
-- name: Copier le fichier de configuration Dashy
-  template:
-    src: "files/dashyconf.j2"
-    dest: "{{ config_file }}"
-    mode: 0644
+- name: Installer Docker si nécessaire
+  apt:
+    name: docker.io
+    state: present
+  when: docker_installed.rc != 0
 
-- name: Lancer Docker Compose
-  command: /usr/local/bin/docker-compose -f {{ compose_file }} up -d
-  args:
-    chdir: "{{ docker_path }}"
+- name: Vérifier si Docker est en cours d'exécution
+  command: systemctl is-active docker
+  register: docker_status
+  changed_when: false
+
+- name: Démarrer Docker si nécessaire
+  service:
+    name: docker
+    state: started
+  when: docker_status.stdout != "active"
+
+- name: Vérifier si l'image Dashy est déjà présente
+  command: docker images -q {{ image_name }}
+  register: docker_image_exists
+  changed_when: false
+
+- name: Télécharger l'image Docker uniquement si elle est absente
+  community.docker.docker_image:
+    name: "{{ image_name }}"
+    source: pull
+    state: present
+  when: docker_image_exists.stdout == ""
