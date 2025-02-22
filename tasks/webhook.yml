@@ -6,8 +6,8 @@
 
 - name: Set docker_pull_success to true if pull was successful
   set_fact:
-    docker_pull_success: "{{ docker_pull is defined and docker_pull.rc == 0 }}"
-    
+    docker_pull_success: "{{ docker_pull.rc == 0 }}"
+
 - name: Set docker_running to true if Docker is running
   set_fact:
     docker_running: "{{ 'running' in docker_status.stdout }}"

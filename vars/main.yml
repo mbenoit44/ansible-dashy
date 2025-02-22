@@ -15,7 +15,6 @@ docker_running: false
 docker_pull_success: false 
 
 # Chemins et volumes
-docker_bin: "/usr/local/bin/docker"
 docker_path: "/volume1/docker/dashy"
 config_file: "{{ docker_path }}/dashy_conf.yml"
 icons_path: "{{ docker_path }}/icons"

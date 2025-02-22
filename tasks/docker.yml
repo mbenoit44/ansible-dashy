@@ -1,55 +1,37 @@
 ---
-# tasks/docker.yml
-- name: Ajouter {{ docker_bin }} au PATH
-  lineinfile:
-    path: ~/.bashrc
-    line: 'export PATH=${{ docker_bin }}'
-    create: yes
-
-- name: Recharger l'environnement shell
-  shell: source ~/.bashrc
-
-
-- name: Installer Docker si nécessaire
-  apt:
-    name: docker.io
-    state: present
-  when: not docker_installed.stat.exists
-
-
-- name: Vérifier si Docker est installé
-  stat:
-    path: {{ docker_bin }}
-  register: docker_installed
-  changed_when: false
-
-- name: Installer Docker si nécessaire
-  apt:
-    name: docker.io
-    state: present
-  when: not docker_installed.stat.exists
-
-- name: Vérifier si Docker est en cours d'exécution
-  command: systemctl is-active docker
+# tasks file for {{ container_name }} 
+- name: Check if {{ container_name }} is running
+  command: /usr/local/bin/docker inspect -f "{{ '{{ .State.Status }}' }}" {{ container_name }}
   register: docker_status
+  failed_when: docker_status.rc != 0
   changed_when: false
-  when: docker_installed.stat.exists
 
-- name: Démarrer Docker si nécessaire
-  service:
-    name: docker
-    state: started
-  when: docker_status.stdout != "active" and docker_installed.stat.exists
+- name: Print Docker running status
+  debug:
+    msg: "Docker is running: {{ docker_status.stdout }}"
+  when: "'running' in docker_status.stdout"
 
-- name: Vérifier si l'image Dashy est déjà présente
-  command: docker images -q {{ image_name }}
-  register: docker_image_exists
-  changed_when: false
-  when: docker_installed.stat.exists
+- name: Docker is not running
+  debug:
+    msg: "Docker is not running or not installed"
+  when: "'running' not in docker_status.stdout"
 
-- name: Télécharger l'image Docker uniquement si elle est absente
-  community.docker.docker_image:
-    name: "{{ image_name }}"
-    source: pull
-    state: present
-  when: docker_image_exists.stdout == "" and docker_installed.stat.exists
+- name: Docker is not running, attempting to start it
+  debug:
+    msg: "Docker is not running or not installed, attempting to start it"
+  when: "'running' not in docker_status.stdout"
+
+- name: Download Docker image {{ image_name }}
+  command: /var/packages/ContainerManager/target/usr/bin/docker pull {{ image_name }}
+  register: docker_pull
+  ignore_errors: yes
+
+- name: Print Docker image pull status {{ image_name }}
+  debug:
+    msg: "Docker image pull result: {{ docker_pull.stdout }}"
+  when: docker_pull.rc == 0
+
+- name: Failed to pull Docker image {{ image_name }}
+  debug:
+    msg: "Failed to pull Docker image"
+  when: docker_pull.rc != 0
