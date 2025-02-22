@@ -61,8 +61,3 @@
   debug:
     msg: "Docker image pull result: {{ docker_pull.stdout }}"
   when: docker_pull.changed
-
-- name: Failed to pull Docker image {{ image_name }}
-  debug:
-    msg: "Failed to pull Docker image"
-  when: docker_pull.changed

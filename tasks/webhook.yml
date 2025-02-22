@@ -19,7 +19,7 @@
     method: POST
     body_format: json
     body:
-      content: "✅ Succès : L’image Docker de {{ image_name }}  a été mis à jour avec succès. et Docker est actif !"
+      content: "✅ Succès : L’image Docker de {{ image_name }} a été mis à jour avec succès. et Docker est désormais actif !"
     status_code: [200, 204]  # Accepte les réponses 200 et 204
   register: webhook_response
   when: docker_pull_success
@@ -31,7 +31,7 @@
     method: POST
     body_format: json
     body:
-      content: "ℹ️ Pour information : Docker est actif, mais l’image de {{ image_name }}  n’a pas été mis à jour"
+      content: "ℹ️ Pour information : Docker est actif, mais il n'y a pas eu de mise à jour de l’image  {{ image_name }}"
     status_code: [200, 204]
   register: webhook_response
   when: docker_running and not docker_pull_success
