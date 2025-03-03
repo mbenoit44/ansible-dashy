@@ -132,6 +132,12 @@ Si Dashy ne démarre pas correctement, voici quelques étapes à suivre pour dia
 
 ---
 
+### 🐝 **Récupération du rôle**  
+Dans un premier temps il est nécessaire de récupèrer les différents rôles associé au Playbook :  
+```bash
+ansible-galaxy install -r requirements.yml --force
+```
+
 ### 🐝 **Exécution du Playbook Ansible**
 
 Si tu souhaites automatiser l'installation et la configuration de Dashy sur ton serveur, tu peux utiliser le playbook Ansible suivant :  

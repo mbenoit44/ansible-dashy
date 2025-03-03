@@ -1,0 +1,6 @@
+---
+roles:
+  - name: role_docker_compose
+    src: git@github.com:mbenoit44/role_docker_compose.git
+    scm: git
+    version: main  # Remplace par la branche appropriée si nécessaire

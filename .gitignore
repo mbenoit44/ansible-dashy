@@ -1,0 +1,2 @@
+# Ignorer les rôles téléchargés via Ansible Galaxy
+roles/role_docker_compose/

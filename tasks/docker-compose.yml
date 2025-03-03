@@ -11,7 +11,7 @@
     dest: "{{ config_file }}"
     mode: 0644
 
-- name: Lancer Docker Compose
-  command: /usr/local/bin/docker-compose -f {{ compose_file }} up -d
-  args:
-    chdir: "{{ docker_path }}"
+#- name: Lancer Docker Compose
+#  command: /usr/local/bin/docker-compose -f {{ compose_file }} up -d
+#  args:
+#    chdir: "{{ docker_path }}"
