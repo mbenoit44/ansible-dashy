@@ -2,15 +2,13 @@
 - hosts: all
   become: true
   become_user: matstar
+
   roles:
     - role_docker_compose  # Utilisation du rôle téléchargé
 
   vars_files:
     - vars/main.yml
   tasks:
-    #- name: Vérification et mise à jour de Docker
-    #  include_tasks: tasks/docker.yml
-
     - name: Déployer le fichier Docker Compose
       include_tasks: tasks/docker-compose.yml
 
