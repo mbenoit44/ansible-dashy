@@ -1,0 +1,6 @@
+---
+# Redémarre le service Docker Compose
+- name: Redémarrer Docker Compose
+  command: "/usr/local/bin/docker-compose -f {{ compose_file }} restart"
+  args:
+    chdir: "{{ docker_path }}"

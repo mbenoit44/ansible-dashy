@@ -1,0 +1,65 @@
+---
+# Install Docker et Docker Composer
+- name: Vérifier si Docker Compose est installé
+  command: /usr/local/bin/docker-compose --version
+  register: docker_compose_installed
+  ignore_errors: true
+  changed_when: false
+
+# tasks file for {{ container_name }} 
+- name: Check if {{ container_name }} is running
+  command: /usr/local/bin/docker inspect -f "{{ '{{ .State.Status }}' }}" {{ container_name }}
+  register: docker_status
+  failed_when: docker_status.rc != 0
+  changed_when: false
+
+- name: Print Docker running status
+  debug:
+    msg: "Docker is running: {{ docker_status.stdout }}"
+  when: "'running' in docker_status.stdout"
+
+- name: Docker is not running
+  debug:
+    msg: "Docker is not running or not installed"
+  when: "'running' not in docker_status.stdout"
+
+- name: Docker is not running, attempting to start it
+  debug:
+    msg: "Docker is not running or not installed, attempting to start it"
+  when: "'running' not in docker_status.stdout"
+
+- name: Vérifier si l'image Docker est à jour
+  community.docker.docker_image_info:
+    name: "{{ image_name }}"
+  register: dashy_image_info
+  ignore_errors: true
+
+- name: Télécharger la dernière version de l'image Docker
+  community.docker.docker_image:
+    name: "{{ image_name }}"
+    source: pull
+  register: docker_pull
+
+- name: Print Docker image pull status {{ image_name }}
+  debug:
+    msg: "Docker image {{ image_name }} a été mise à jour."
+  when: docker_pull.changed
+
+- name: Vérifier la valeur de image_name
+  debug:
+    var: image_name
+
+- name: Print Docker image pull status {{ image_name }}
+  debug:
+    msg: "Docker image {{ image_name }} a été mise à jour."
+  when: docker_pull.changed
+
+- name: Afficher le statut du pull de l'image Docker
+  debug:
+    msg: "Docker image {{ image_name }} a été mise à jour."
+  when: docker_pull.changed
+
+- name: Print Docker image pull status {{ image_name }}
+  debug:
+    msg: "Docker image pull result: {{ docker_pull.stdout }}"
+  when: docker_pull.changed

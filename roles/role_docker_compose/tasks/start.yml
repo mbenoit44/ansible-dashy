@@ -1,0 +1,7 @@
+---
+# Gère le service Docker Compose
+- name: Lancer le service avec Docker Compose
+  command: "/usr/local/bin/docker-compose -f {{ compose_file }} up -d"
+  args:
+    chdir: "{{ docker_path }}"
+  notify: Redémarrer Docker Compose

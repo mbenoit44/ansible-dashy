@@ -1,0 +1,7 @@
+---
+# Inclut les autres tâches
+- name: Installer Docker et Docker Compose
+  include_tasks: install.yml
+
+- name: Lancer le service Docker Compose
+  include_tasks: start.yml

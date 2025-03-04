@@ -2,16 +2,19 @@
 - hosts: all
   become: true
   become_user: matstar
+  pre_tasks:
+    - name: Installer les rôles Ansible depuis requirements.yml
+      ansible.builtin.command:
+        cmd: ansible-galaxy install -r role/requirements.yml --force
 
   roles:
     - role_docker_compose  # Utilisation du rôle téléchargé
 
   vars_files:
     - vars/main.yml
-
   tasks:
     - name: Déployer le fichier Docker Compose
-      ansible.builtin.include_tasks: tasks/docker-compose.yml
+      include_tasks: tasks/docker-compose.yml
 
     - name: Effectuer la communication via webhook
-      ansible.builtin.include_tasks: tasks/webhook.yml
+      include_tasks: tasks/webhook.yml
